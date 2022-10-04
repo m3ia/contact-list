@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import NewContactForm from "./NewContactForm";
+import ContactView from "./ContactView";
 
 const ContactsHome = () => {
   const [contacts, setContacts] = useState([]);
@@ -10,6 +11,8 @@ const ContactsHome = () => {
     notes: "",
     photo: "",
   });
+  const [contactView, setContactView] = useState({});
+
   const getContacts = async () => {
     await fetch("http://localhost:8080/contacts")
       .then((res) => res.json())
@@ -40,7 +43,6 @@ const ContactsHome = () => {
 
     const content = await res.json();
     console.log("content", content);
-    // setSightings([transformData(content), ...sightings]);
     getContacts();
 
     setContact({
@@ -58,31 +60,45 @@ const ContactsHome = () => {
 
   return (
     <div className="container">
-      <div className="title-bar">
-        <h2>Contacts</h2>{" "}
-        <NewContactForm
-          contacts={contacts}
-          setContacts={setContacts}
-          contact={contact}
-          setContact={setContact}
-          addNewContact={addNewContact}
-        />
-      </div>
-      <div className="contacts-list">
-        {contacts.map((contact, ind) => {
-          return (
-            <div className="contact-item" key={ind}>
-              <img
-                src={contact.photo}
-                alt="profile"
-                key={ind}
-                className="profile-photos"></img>
+      {Object.keys(contactView).length === 0 ? (
+        <div>
+          <div className="title-bar">
+            <h2>Contacts</h2>{" "}
+            <NewContactForm
+              contacts={contacts}
+              setContacts={setContacts}
+              contact={contact}
+              setContact={setContact}
+              addNewContact={addNewContact}
+            />
+          </div>
+          <div className="contacts-list">
+            {contacts.map((contact, ind) => {
+              return (
+                <div
+                  className="contact-item"
+                  key={ind}
+                  onClick={() => {
+                    setContactView({...contactView, ...contact});
+                  }}>
+                  <img
+                    src={contact.photo}
+                    alt="profile"
+                    key={ind}
+                    className="profile-photos"></img>
 
-              <span className="contact-names">{contact.name}</span>
-            </div>
-          );
-        })}
-      </div>
+                  <span className="contact-names">{contact.name}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ) : (
+        <ContactView
+          contactView={contactView}
+          setContactView={setContactView}
+        />
+      )}
     </div>
   );
 };
