@@ -4,6 +4,7 @@ import ContactView from "./ContactView";
 
 const ContactsHome = () => {
   const [contacts, setContacts] = useState([]);
+  const [uniqueContacts, setUniqueContacts] = useState([]);
   const [contact, setContact] = useState({
     name: "",
     number: "",
