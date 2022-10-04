@@ -4,7 +4,7 @@ import ContactView from "./ContactView";
 
 const ContactsHome = () => {
   const [contacts, setContacts] = useState([]);
-  const [uniqueContacts, setUniqueContacts] = useState([]);
+  const [contactIds, setContactIds] = useState([]);
   const [contact, setContact] = useState({
     name: "",
     number: "",
@@ -17,7 +17,29 @@ const ContactsHome = () => {
   const getContacts = async () => {
     await fetch("http://localhost:8080/contacts")
       .then((res) => res.json())
-      .then((res) => setContacts(res));
+      .then((res) => {
+        setContacts(res);
+        let contactsArr = [];
+        let ids = [];
+        for (let item of res) {
+          if (!ids.includes(item.id)) {
+            ids.push(item.id);
+            let contactObj = {
+              id: item.id,
+              name: item.name,
+              number: [item.number],
+              email: item.email,
+              photo: item.photo,
+              notes: item.notes,
+            };
+            contactsArr.push(contactObj);
+          } else {
+            let itemIndex = ids.indexOf(item.id);
+            contactsArr[itemIndex].number.push(item.number);
+          }
+        }
+        setContactIds(contactsArr);
+      });
   };
 
   // Add Contact
