@@ -16,7 +16,17 @@ const ContactsHome = () => {
       </div>
       <div className="contacts-list">
         {contacts.map((contact, ind) => {
-          return <p key={ind}>{contact.name}</p>;
+          return (
+            <div className="contact-item" key={ind}>
+              <img
+                src={contact.photo}
+                alt="profile"
+                key={ind}
+                className="profile-photos"></img>
+
+              <span className="contact-names">{contact.name}</span>
+            </div>
+          );
         })}
       </div>
     </div>
