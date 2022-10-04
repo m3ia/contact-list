@@ -5,6 +5,8 @@ html, body {
   margin: 0;
   justify-content: center;
 }
+
+/* Entire App */
 .App {
   display: flex;
   flex-direction: column;
@@ -13,6 +15,7 @@ html, body {
   width: 100%;
 }
 
+/* Container within App */
 .container {
   display: flex;
   flex-direction: column;
@@ -20,6 +23,7 @@ html, body {
   width: 700px;
 }
 
+/* Home Page ------------------------------*/
 .title-bar {
   display: flex;
   flex-direction: row;
@@ -31,23 +35,6 @@ html, body {
   width: 700px;
   border: 2px solid black;
   border-radius: 25px;
-}
-
-.contact-view-container {
-  width: 400px;
-  border: 2px solid black;
-  border-radius: 25px;
-}
-
-.contact-view-menu {
-  margin: 20px;
-}
-.contact-view-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 10px;
-  margin-bottom: 25px;
 }
 
 .contact-item {
@@ -74,3 +61,37 @@ html, body {
 .contact-names {
   margin-left: 20px;
 }
+
+/* Single Contact View ------------------------------*/
+.contact-view-container {
+  width: 400px;
+  border: 2px solid black;
+  border-radius: 25px;
+}
+
+.contact-view-menu {
+  display: flex;
+  flex-direction: row;
+  margin: 20px;
+  justify-content: space-between;
+}
+
+.menu-icons {
+  font-size: 40px;
+}
+.contact-view-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+  margin-bottom: 25px;
+}
+
+.delete-icon {
+  width: 100%;
+}
+.contact-view-footer {
+  display: flex;
+  flex-direction: row;
+}
+

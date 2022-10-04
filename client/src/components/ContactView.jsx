@@ -2,13 +2,21 @@ const ContactView = ({contactView, setContactView}) => {
   return (
     <div className="contact-view-container">
       <div className="contact-view-menu">
-        <span
-          className="material-symbols-outlined"
-          onClick={() => {
-            setContactView({});
-          }}>
-          arrow_back_ios
-        </span>
+        <div className="contact-view-back-btn-div">
+          <span
+            className="material-symbols-outlined menu-icons"
+            onClick={() => {
+              setContactView({});
+            }}>
+            arrow_back_ios
+          </span>
+        </div>
+
+        <div className="contact-view-delete-btn">
+          <span className="material-symbols-outlined menu-icons delete-icon">
+            delete
+          </span>
+        </div>
       </div>
       <div className="contact-view-card">
         <div className="contact-view-photo">
@@ -47,7 +55,11 @@ const ContactView = ({contactView, setContactView}) => {
             {contactView.notes ? contactView.notes : "none"}
           </p>
         </div>
-        <div className="contact-view-footer"></div>
+        <div className="contact-view-footer">
+          <span className="material-symbols-outlined menu-icons">
+            edit_square
+          </span>
+        </div>
       </div>
     </div>
   );
