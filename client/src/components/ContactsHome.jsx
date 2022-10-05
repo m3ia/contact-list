@@ -29,7 +29,12 @@ const ContactsHome = () => {
             let contactObj = {
               id: item.id,
               name: item.name,
-              numbers: [item.number],
+              numbers: [
+                {
+                  numberId: item.number_id,
+                  number: item.number,
+                },
+              ],
               email: item.email,
               photo: item.photo,
               notes: item.notes,
@@ -37,7 +42,10 @@ const ContactsHome = () => {
             contactsArr.push(contactObj);
           } else {
             let itemIndex = ids.indexOf(item.id);
-            contactsArr[itemIndex].numbers.push(item.number);
+            contactsArr[itemIndex].numbers.push({
+              numberId: item.number_id,
+              number: item.number,
+            });
           }
         }
         setContacts(contactsArr);

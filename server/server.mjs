@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 // GET - All Contacts --------------------------------------------------------
 app.get('/contacts', async function (req, res) {
   try {
-    const contacts = await db.any('SELECT contacts.id, contacts.name, numbers.number, emails.email, contacts.photo, contacts.notes FROM numbers LEFT JOIN contacts ON contacts.id=numbers.contact_id LEFT JOIN emails ON contacts.id=emails.contact_id ORDER BY contacts.id DESC;');
+    const contacts = await db.any('SELECT contacts.id, contacts.name, numbers.id AS number_id, numbers.number, emails.email, contacts.photo, contacts.notes FROM numbers LEFT JOIN contacts ON contacts.id=numbers.contact_id LEFT JOIN emails ON contacts.id=emails.contact_id ORDER BY contacts.id');
     res.send(contacts);
   } catch (e) {
     return res.status(400).json({ e });
