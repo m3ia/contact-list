@@ -15,6 +15,7 @@ const ContactsHome = () => {
   });
   // contactView contains info for ONE contact that the user wants to view
   const [contactView, setContactView] = useState({});
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   const getContacts = async () => {
     await fetch("http://localhost:8080/contacts")
@@ -91,6 +92,9 @@ const ContactsHome = () => {
 
   return (
     <div className="container">
+      <div className="delete-confirmation-div">
+        {confirmDelete && <h2>Contact Deleted</h2>}
+      </div>
       {Object.keys(contactView).length === 0 ? (
         <div>
           <div className="title-bar">
@@ -129,6 +133,8 @@ const ContactsHome = () => {
           contactView={contactView}
           setContactView={setContactView}
           getContacts={getContacts}
+          setConfirmDelete={setConfirmDelete}
+          setContacts={setContacts}
         />
       )}
     </div>

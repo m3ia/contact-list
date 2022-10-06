@@ -1,7 +1,12 @@
 import {useState, useRef} from "react";
-const ContactView = ({contactView, setContactView, getContacts}) => {
+const ContactView = ({
+  contactView,
+  setContactView,
+  getContacts,
+  setConfirmDelete,
+  setContacts,
+}) => {
   const [editMode, setEditMode] = useState(false);
-  const [phoneUpdate, setPhoneUpdate] = useState("");
   const [contactUpdate, setContactUpdate] = useState({
     id: "",
     name: "",
@@ -11,6 +16,7 @@ const ContactView = ({contactView, setContactView, getContacts}) => {
     notes: "",
   });
 
+  // Edit Contact
   const submitEdit = async (e, contactUpdate) => {
     e.preventDefault();
 
@@ -50,6 +56,21 @@ const ContactView = ({contactView, setContactView, getContacts}) => {
     });
   };
 
+  // Delete Contact
+  const deleteContact = async (id) => {
+    await fetch(`http://localhost:8080/contacts/${id}`, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+    setContactView({});
+    setConfirmDelete(true);
+    setTimeout(() => setConfirmDelete(false), 3000);
+    setContacts((prev) => prev.filter((item) => item.id !== id));
+  };
+
   return (
     <div className="contact-view-container">
       <div className="contact-view-menu">
@@ -64,7 +85,9 @@ const ContactView = ({contactView, setContactView, getContacts}) => {
         </div>
 
         <div className="contact-view-delete-btn">
-          <span className="material-symbols-outlined menu-icons delete-icon">
+          <span
+            className="material-symbols-outlined menu-icons delete-icon"
+            onClick={() => deleteContact(contactView.id)}>
             delete
           </span>
         </div>

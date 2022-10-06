@@ -86,3 +86,18 @@ app.patch('/contacts/:id', async (req, res) => {
     return res.status(400).json({ e });
   }
 });
+
+// DELETE - Delete Contact ------------------------------
+
+app.delete('/contacts/:id', async (req, res) => {
+  // : acts as a placeholder
+  const contactId = req.params.id;
+  try {
+    await db.none('DELETE FROM numbers WHERE contact_id=$1', [contactId]);
+    await db.none('DELETE FROM emails WHERE contact_id=$1', [contactId]);
+    await db.none('DELETE FROM contacts WHERE id=$1', [contactId]);
+    res.send(204);
+  } catch (e) {
+    return res.status(400).json({ e });
+  }
+});
