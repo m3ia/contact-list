@@ -27,6 +27,8 @@ const ContactView = ({contactView, setContactView, getContacts}) => {
       photo: contactUpdate.photo ? contactUpdate.photo : contactView.photo,
       notes: contactUpdate.notes ? contactUpdate.notes : contactView.notes,
     };
+
+    setContactView(updatingUser);
     await fetch(`http://localhost:8080/contacts/${updatingUser.id}`, {
       method: "PATCH",
       headers: {
