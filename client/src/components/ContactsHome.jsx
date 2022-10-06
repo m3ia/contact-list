@@ -74,8 +74,6 @@ const ContactsHome = () => {
       body: JSON.stringify(newContact),
     });
 
-    const content = await res.json();
-    console.log("content", content);
     getContacts();
 
     setContact({
@@ -130,6 +128,7 @@ const ContactsHome = () => {
         <ContactView
           contactView={contactView}
           setContactView={setContactView}
+          getContacts={getContacts}
         />
       )}
     </div>

@@ -2,27 +2,6 @@ import {useState, useEffect} from "react";
 import {Button, Modal, Form} from "react-bootstrap";
 
 function FormModal(props) {
-  // Get Individuals
-  // useEffect(() => {
-  //   const getIndividuals = async () => {
-  //     await fetch("http://localhost:8080/individuals")
-  //       .then((res) => res.json())
-  //       .then((res) => {
-  //         props.setIndividuals(() => [
-  //           ...res.map((individual) => {
-  //             return {
-  //               id: individual.id,
-  //               nickName: individual.nick_name,
-  //               seenDate: individual.seen_on,
-  //               speciesId: individual.species_id,
-  //             };
-  //           }),
-  //         ]);
-  //       });
-  //   };
-  //   getIndividuals();
-  // }, []);
-
   return (
     <Modal
       show={props.show}
@@ -162,8 +141,6 @@ function AddSightingForm({
         contact={contact}
         setContact={setContact}
         addNewContact={addNewContact}
-        // individuals={individuals}
-        // setIndividuals={setIndividuals}
       />
     </>
   );

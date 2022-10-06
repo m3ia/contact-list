@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 // GET - All Contacts --------------------------------------------------------
 app.get('/contacts', async function (req, res) {
   try {
-    const contacts = await db.any('SELECT contacts.id, contacts.name, numbers.id AS number_id, numbers.number, emails.email, contacts.photo, contacts.notes FROM numbers LEFT JOIN contacts ON contacts.id=numbers.contact_id LEFT JOIN emails ON contacts.id=emails.contact_id ORDER BY contacts.id');
+    const contacts = await db.any('SELECT contacts.id, contacts.name, numbers.id AS number_id, numbers.number, emails.email, emails.id AS email_id, contacts.photo, contacts.notes FROM numbers LEFT JOIN contacts ON contacts.id=numbers.contact_id LEFT JOIN emails ON contacts.id=emails.contact_id ORDER BY contacts.id');
     res.send(contacts);
   } catch (e) {
     return res.status(400).json({ e });
@@ -48,6 +48,41 @@ app.post('/newcontact', async (req, res) => {
     res.send(createdContact);
     
   } catch (e) {
+    return res.status(400).json({ e });
+  }
+});
+
+// PATCH - Edit Contact ---------------------------------------------------
+app.patch('/contacts/:id', async (req, res) => {
+  // Update contact info
+  const contactReq = {
+    id: req.body.id,
+    email: req.body.email,
+    name: req.body.name, 
+    notes: req.body.notes, 
+    photo: req.body.photo, 
+  };
+
+  try {
+    // Update numbers
+    for (let item of req.body.numbers) {
+      const numbersUpdate = await db.one(`UPDATE numbers SET number = $1 WHERE id = $2 RETURNING *`, [item.number, item.numberId]);
+      console.log('Updated number: ', numbersUpdate);
+    }
+
+    // Update email
+    const emailUpdate = await db.one(`UPDATE emails SET email = $1 WHERE contact_id = $2 RETURNING *`, [contactReq.email, contactReq.id]);
+    console.log('Updated email: ', emailUpdate);
+
+    const contactUpdate = await db.one(
+      `UPDATE contacts SET name = $1, notes = $2, photo = $3 WHERE id=$4 RETURNING *`,
+      [contactReq.name, contactReq.notes, contactReq.photo, contactReq.id]
+    );
+
+    console.log('Updated contact: ', contactUpdate);
+    res.send(204)
+  } catch (e) {
+    console.log('e: ', e)
     return res.status(400).json({ e });
   }
 });

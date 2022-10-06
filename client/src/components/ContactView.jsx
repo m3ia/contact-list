@@ -1,14 +1,52 @@
 import {useState, useRef} from "react";
-const ContactView = ({contactView, setContactView}) => {
+const ContactView = ({contactView, setContactView, getContacts}) => {
   const [editMode, setEditMode] = useState(false);
   const [phoneUpdate, setPhoneUpdate] = useState("");
   const [contactUpdate, setContactUpdate] = useState({
+    id: "",
     name: "",
     numbers: [],
     email: "",
     photo: "",
     notes: "",
   });
+
+  const submitEdit = async (e, contactUpdate) => {
+    e.preventDefault();
+
+    setContactUpdate((prev) => (prev.id = contactView.id));
+
+    const updatingUser = {
+      id: contactView.id,
+      name: contactUpdate.name ? contactUpdate.name : contactView.name,
+      numbers:
+        contactUpdate.numbers.length !== 0
+          ? contactUpdate.numbers
+          : contactView.numbers,
+      email: contactUpdate.email ? contactUpdate.email : contactView.email,
+      photo: contactUpdate.photo ? contactUpdate.photo : contactView.photo,
+      notes: contactUpdate.notes ? contactUpdate.notes : contactView.notes,
+    };
+    await fetch(`http://localhost:8080/contacts/${updatingUser.id}`, {
+      method: "PATCH",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatingUser),
+    });
+
+    setEditMode(false);
+    getContacts();
+    setContactUpdate({
+      id: "",
+      name: "",
+      numbers: [],
+      email: "",
+      photo: "",
+      notes: "",
+    });
+  };
 
   return (
     <div className="contact-view-container">
@@ -164,7 +202,11 @@ const ContactView = ({contactView, setContactView}) => {
                 onClick={() => setEditMode(false)}>
                 cancel
               </span>
-              <span className="material-symbols-outlined menu-icons">save</span>
+              <span
+                className="material-symbols-outlined menu-icons"
+                onClick={(e) => submitEdit(e, contactUpdate)}>
+                save
+              </span>
             </p>
           ) : (
             <p>
